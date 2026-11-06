@@ -1,6 +1,14 @@
 from api import fetch_weather
 import requests
 import json
+from pprint import pprint
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 url = "https://api.open-meteo.com/v1/forecast?latitude=59.3294,55.6059,57.71,63.8284,67.8557&longitude=18.0687,13.0007,11.97,20.2597,20.2251&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&current=temperature_2m,wind_speed_10m&timezone=auto&forecast_days=3"
 
@@ -16,32 +24,33 @@ def cities(url):
     data = fetch_weather(url)
 
     cities_json = []
-    # test = []
     for e in data:
-        # e['city'] = ""
         lat = round(e['latitude'], 2)
         lon = round(e['longitude'], 2)
+        city_found = False
         for city in cities_list:
             if lat == cities_list[city]['lat'] and lon == cities_list[city]['lon']:
-                # e['city'] = city
-                # cities_json.append(e)
-                ordered_city_data = {"city": city, **e}
-                
-                cities_json.append(ordered_city_data)
+                e['city'] = city
+                cities_json.append(e)
+                # ordered_city_data = {"city": city, **e}                
+                # cities_json.append(ordered_city_data)
+                city_found = True
+                break
         # test.append(lat)
         # test.append(lon)
+        if not city_found:
+            logger.warning(f"City with long {lon} and lat {lat} not found.")
 
-    # return test
-    # return cities_json
-    city_names = []
-    for e in cities_json:
-        city_names.append(e['city'])
+    return cities_json
+    # city_names = []
+    # for e in cities_json:
+    #     city_names.append(e['city'])
 
-    return city_names
+    # return city_names
 
 
-# print(cities(url))
+pprint(cities(url))
 
-pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
-print(pretty_data)
+# pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
+# print(pretty_data)
 

@@ -1,5 +1,12 @@
 from flask import Flask, render_template
 from api import fetch_weather
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
