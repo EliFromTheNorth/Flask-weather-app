@@ -3,6 +3,7 @@ import requests
 import json
 from pprint import pprint
 import logging
+import pandas as pd
 
 logging.basicConfig(
     level=logging.INFO,
@@ -49,8 +50,24 @@ def cities(url):
     # return city_names
 
 
-pprint(cities(url))
+# pprint(cities(url))
 
 # pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
 # print(pretty_data)
+
+data = cities(url)
+
+def select_city(city):
+    for e in data:
+        if e['city'] == city:
+            logger.info(f"City {city} found.")
+            return [e]
+    logger.warning(f"City {city} not found.")
+    return None
+        
+
+pprint(select_city('Stockholm'))
+pprint(select_city('hhh'))
+
+selected_city = select_city(city):
 

@@ -15,3 +15,7 @@ url = "https://api.open-meteo.com/v1/forecast?latitude=59.3294,55.6059,57.71,63.
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/<city_name>")
+def weather(city_name):
+    return render_template("city_name.html", city=city_name)
