@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from api import fetch_reather
+from api import fetch_weather
 
 app = Flask(__name__)
 
