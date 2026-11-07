@@ -61,13 +61,32 @@ def select_city(city):
     for e in data:
         if e['city'] == city:
             logger.info(f"City {city} found.")
-            return [e]
+            return e
     logger.warning(f"City {city} not found.")
     return None
         
 
-pprint(select_city('Stockholm'))
-pprint(select_city('hhh'))
+# pprint(select_city('Stockholm'))
+# pprint(select_city('hhh'))
 
-selected_city = select_city(city):
 
+def create_table(city):
+    table_data = []
+    selected_city = select_city("Stockholm")
+    # selected_city = select_city(city)
+    if selected_city:
+        for i in range(len(selected_city['daily']['time'])):
+            table_data.append({
+                "datum": selected_city['daily']['time'][i],
+                "Temperatur": selected_city['current']['temperature_2m'],
+                "Wind speed": selected_city['current']['wind_speed_10m'],
+                "Daily precipitation": selected_city['daily']['precipitation_sum'][i],
+                "max daily temperature": selected_city['daily']['temperature_2m_max'][i],
+                "min daily temperature": selected_city['daily']['temperature_2m_min'][i]
+            })
+        df = pd.DataFrame(table_data).T
+    else:
+        df = None
+    return df
+
+print(create_table("Stockholm"))
