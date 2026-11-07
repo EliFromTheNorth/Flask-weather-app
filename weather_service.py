@@ -74,8 +74,8 @@ def select_city(city_name):
 
 def create_table(city): #casem se to predela na dve tabulky
     table_data = []
-    selected_city = select_city("Stockholm") #TEST
-    # selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
+    # selected_city = select_city("Stockholm") #TEST
+    selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
             if i == 0:
@@ -99,8 +99,8 @@ def create_table(city): #casem se to predela na dve tabulky
 
 # print(create_table("Stockholm"))
 
-def weather_dashboard(URL):
-    table = create_table("Stockholm") #tady by se asi melo dat to mesto, ktere uzivatel vybere?
+def weather_dashboard(city):
+    table = create_table(city) #tady by se asi melo dat to mesto, ktere uzivatel vybere?
     # table.columns = ["" for _ in table.columns]
     html = table.to_html(classes="table table-striped", header=False)
     return html
