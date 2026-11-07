@@ -71,14 +71,18 @@ def select_city(city_name):
 pprint(select_city('Stockholm'))
 # pprint(select_city('hhh'))
 
-# def current_weather_table(city):
-#     table_data = []
-#     current_temp = selected_city['current']['temperature_2m']
-#     current_wind = selected_city['current']['wind_speed_10m']
-#     table_data.append({
-#                     "Temperatur": current_temp,
-#                     "Wind speed": current_wind
-#     )}
+def current_weather_table(city):
+    table_data = []
+    selected_city = select_city(city)
+    if selected_city:
+        table_data.append({
+            "Temperature": selected_city['current']['temperature_2m'],
+            "Wind speed": selected_city['current']['wind_speed_10m']
+        })
+        df = pd.DataFrame(table_data).T
+    else:
+        df = None
+    return df
 
 
 def create_table_3days(city): #casem se to predela na dve tabulky
@@ -100,7 +104,11 @@ def create_table_3days(city): #casem se to predela na dve tabulky
 # print(create_table("Stockholm"))
 
 def weather_dashboard(city):
+    current_table = current_weather_table(city)
     table = create_table_3days(city)
     # table.columns = ["" for _ in table.columns]
-    html = table.to_html(classes="table table-striped", header=False)
-    return html
+    # if df_current is not None and table_3days is not None:
+    html_3days = table.to_html(classes="table table-striped", header=False)
+    html_current = current_table.to_html(classes="table table-striped", header=False)
+    return html_current, html_3days
+    # return None, None 
