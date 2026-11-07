@@ -51,7 +51,7 @@ def city_name_list():
 # return sorted(list({e['city'] for e in cities_json if 'city' in e}))
 
 
-# pprint(cities(url))
+# pprint(cities(URL))
 
 # pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
 # print(pretty_data)
@@ -68,13 +68,12 @@ def select_city(city_name):
     return None
         
 
-# pprint(select_city('Stockholm'))
+pprint(select_city('Stockholm'))
 # pprint(select_city('hhh'))
 
 
 def create_table(city): #casem se to predela na dve tabulky
     table_data = []
-    # selected_city = select_city("Stockholm") #TEST
     selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
