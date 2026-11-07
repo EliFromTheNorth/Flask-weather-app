@@ -3,16 +3,17 @@
 <div class="mb-4 rounded-3">
     <div class="container-fluid">
         <h1 class="display-5 fw-bold">Hello!</h1>
-        <!-- <p class="col-md-8 fs-3">Här kan du utforska <span class="text-primary">globala jordbävningar</span> med en magnitud över 2.5 som har inträffat under de <span class="text-success">senaste 30 dagarna</span>.</p>
-        <div class="row align-items-center my-5 d-flex justify-content-center">
-            <ul class="fs-5 col-md-8">
-                <li class="mb-4">📊 <strong>Statistik:</strong> Fördjupa dig i tydliga grafer över både magnituder och djup.</li>
-                <li class="mb-4">🌍 <strong>Interaktiv karta:</strong> Se exakt var jordskalven har ägt rum runt om i världen.</li>
-                <li class="mb-4">📈 <strong>Tidslinje & Antal:</strong> Följ utvecklingen och se grafer över antalet skalv per dag under den senaste månaden.</li>
-            </ul>
-            <img src="{{ url_for('static', filename='images/earthquake.jpg') }}" class="img-fluid w-25 col-md-4" alt="Jordbävning">
-        </div> -->
-        <!-- <p class="fs-5">Håll dig uppdaterad om jordens rörelser på ett enkelt, överskådligt och interaktivt sätt!</p> -->
+        <form action="/" method="GET" class="mt-3">
+        <div class="mb-3">
+            <select name="selected_city" class="form-select" required>
+                <option value="" disabled selected>-- Select city --</option>
+                    {% for city in cities %}
+                        <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}                
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Show forecast</button>
+    </form>
     </div>
 </div>
 {% endblock %}

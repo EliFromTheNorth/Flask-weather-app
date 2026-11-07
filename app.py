@@ -1,7 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from api import fetch_weather
 import logging
-from weather_service import weather_dashboard
+from weather_service import weather_dashboard, cities
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,7 +15,11 @@ url = "https://api.open-meteo.com/v1/forecast?latitude=59.3294,55.6059,57.71,63.
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    selected_city = request.args.get("selected_city")
+    if selected_city:
+        return redirect(url_for('weather', city_name=selected_city))
+    city_names = sorted(list({item['city'] for item in cities(url) if 'city' in item}))
+    return render_template("index.html", cities=city_names)
 
 @app.route("/<city_name>")
 def weather(city_name):
