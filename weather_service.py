@@ -89,9 +89,10 @@ def create_table(city):
         df = None
     return df
 
-print(create_table("Stockholm"))
+# print(create_table("Stockholm"))
 
 def weather_dashboard(url):
     table = create_table("Stockholm")
-    html = table.to_html(classes="table table-striped")
+    # table.columns = ["" for _ in table.columns]
+    html = table.to_html(classes="table table-striped", header=False)
     return html
