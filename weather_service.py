@@ -71,22 +71,23 @@ def select_city(city_name):
 pprint(select_city('Stockholm'))
 # pprint(select_city('hhh'))
 
+# def current_weather_table(city):
+#     table_data = []
+#     current_temp = selected_city['current']['temperature_2m']
+#     current_wind = selected_city['current']['wind_speed_10m']
+#     table_data.append({
+#                     "Temperatur": current_temp,
+#                     "Wind speed": current_wind
+#     )}
 
-def create_table(city): #casem se to predela na dve tabulky
+
+def create_table_3days(city): #casem se to predela na dve tabulky
     table_data = []
     selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
-            if i == 0:
-                current_temp = selected_city['current']['temperature_2m']
-                current_wind = selected_city['current']['wind_speed_10m']
-            else:
-                current_temp = "" 
-                current_wind = ""
             table_data.append({
                 "datum": selected_city['daily']['time'][i],
-                "Temperatur": current_temp,
-                "Wind speed": current_wind,
                 "Daily precipitation": selected_city['daily']['precipitation_sum'][i],
                 "max daily temperature": selected_city['daily']['temperature_2m_max'][i],
                 "min daily temperature": selected_city['daily']['temperature_2m_min'][i]
@@ -99,7 +100,7 @@ def create_table(city): #casem se to predela na dve tabulky
 # print(create_table("Stockholm"))
 
 def weather_dashboard(city):
-    table = create_table(city) #tady by se asi melo dat to mesto, ktere uzivatel vybere?
+    table = create_table_3days(city)
     # table.columns = ["" for _ in table.columns]
     html = table.to_html(classes="table table-striped", header=False)
     return html
