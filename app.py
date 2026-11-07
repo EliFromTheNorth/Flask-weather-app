@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from api import fetch_weather
 import logging
+from weather_service import weather_dashboard
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,4 +19,5 @@ def index():
 
 @app.route("/<city_name>")
 def weather(city_name):
-    return render_template("city_name.html", city=city_name)
+    html_table = weather_dashboard(city_name)
+    return render_template("city_name.html", city=city_name, dashboard=html_table)
