@@ -76,10 +76,16 @@ def create_table(city):
     # selected_city = select_city(city)
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
+            if i == 0:
+                current_temp = selected_city['current']['temperature_2m']
+                current_wind = selected_city['current']['wind_speed_10m']
+            else:
+                current_temp = "" 
+                current_wind = ""
             table_data.append({
                 "datum": selected_city['daily']['time'][i],
-                "Temperatur": selected_city['current']['temperature_2m'],
-                "Wind speed": selected_city['current']['wind_speed_10m'],
+                "Temperatur": current_temp,
+                "Wind speed": current_wind,
                 "Daily precipitation": selected_city['daily']['precipitation_sum'][i],
                 "max daily temperature": selected_city['daily']['temperature_2m_max'][i],
                 "min daily temperature": selected_city['daily']['temperature_2m_min'][i]
