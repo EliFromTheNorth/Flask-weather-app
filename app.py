@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from api import fetch_weather
 import logging
-from weather_service import weather_dashboard, cities
+from weather_service import weather_dashboard, cities, city_name_list
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,7 +18,7 @@ def index():
     selected_city = request.args.get("selected_city")
     if selected_city:
         return redirect(url_for('weather', city_name=selected_city))
-    city_names = sorted(list({item['city'] for item in cities(url) if 'city' in item}))
+    city_names = city_name_list()
     return render_template("index.html", cities=city_names)
 
 @app.route("/<city_name>")

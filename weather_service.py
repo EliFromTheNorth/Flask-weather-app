@@ -1,6 +1,6 @@
 from api import fetch_weather
-import requests
-import json
+# import requests
+# import json
 from pprint import pprint
 import logging
 import pandas as pd
@@ -11,7 +11,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-url = "https://api.open-meteo.com/v1/forecast?latitude=59.3294,55.6059,57.71,63.8284,67.8557&longitude=18.0687,13.0007,11.97,20.2597,20.2251&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&current=temperature_2m,wind_speed_10m&timezone=auto&forecast_days=3"
+URL = "https://api.open-meteo.com/v1/forecast?latitude=59.3294,55.6059,57.71,63.8284,67.8557&longitude=18.0687,13.0007,11.97,20.2597,20.2251&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&current=temperature_2m,wind_speed_10m&timezone=auto&forecast_days=3"
 
 cities_list = {
     "Stockholm": {"lat": 59.33, "lon": 18.07},
@@ -22,7 +22,7 @@ cities_list = {
 }
 
 def cities(url):
-    data = fetch_weather(url)
+    data = fetch_weather(URL)
 
     cities_json = []
     for e in data:
@@ -37,17 +37,18 @@ def cities(url):
                 # cities_json.append(ordered_city_data)
                 city_found = True
                 break
-        # test.append(lat)
-        # test.append(lon)
         if not city_found:
             logger.warning(f"City with long {lon} and lat {lat} not found.")
 
     return cities_json
-    # city_names = []
-    # for e in cities_json:
-    #     city_names.append(e['city'])
 
-    # return city_names
+def city_name_list():
+    cities_json = cities(URL)
+    city_names = []
+    for e in cities_json:
+        city_names.append(e['city'])
+    return city_names
+# return sorted(list({e['city'] for e in cities_json if 'city' in e}))
 
 
 # pprint(cities(url))
@@ -55,14 +56,15 @@ def cities(url):
 # pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
 # print(pretty_data)
 
-data = cities(url)
+data = cities(URL)
 
-def select_city(city):
+#tady do te funkce se bude posilat to mesto, ktere uzivatel vybral v roletce
+def select_city(city_name):
     for e in data:
-        if e['city'] == city:
-            logger.info(f"City {city} found.")
+        if e['city'] == city_name:
+            logger.info(f"City {city_name} found.")
             return e
-    logger.warning(f"City {city} not found.")
+    logger.warning(f"City {city_name} not found.")
     return None
         
 
@@ -70,10 +72,10 @@ def select_city(city):
 # pprint(select_city('hhh'))
 
 
-def create_table(city):
+def create_table(city): #casem se to predela na dve tabulky
     table_data = []
-    selected_city = select_city("Stockholm")
-    # selected_city = select_city(city)
+    selected_city = select_city("Stockholm") #TEST
+    # selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
             if i == 0:
@@ -93,12 +95,12 @@ def create_table(city):
         df = pd.DataFrame(table_data).T
     else:
         df = None
-    return df
+    return df #vrati tabulku k danemu mestu
 
 # print(create_table("Stockholm"))
 
-def weather_dashboard(url):
-    table = create_table("Stockholm")
+def weather_dashboard(URL):
+    table = create_table("Stockholm") #tady by se asi melo dat to mesto, ktere uzivatel vybere?
     # table.columns = ["" for _ in table.columns]
     html = table.to_html(classes="table table-striped", header=False)
     return html

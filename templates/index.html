@@ -5,7 +5,7 @@
         <h1 class="display-5 fw-bold">Hello!</h1>
         <form action="/" method="GET" class="mt-3">
         <div class="mb-3">
-            <select name="selected_city" class="form-select" required>
+            <select name="selected_city" class="form-select" autocomplete="off" required>
                 <option value="" disabled selected>-- Select city --</option>
                     {% for city in cities %}
                         <option value="{{ city }}">{{ city }}</option>
