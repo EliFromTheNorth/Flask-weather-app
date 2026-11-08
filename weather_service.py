@@ -125,3 +125,7 @@ def weather_dashboard(city):
         )
         return html_current, html_3days
     return None, None
+
+# Eget filter: bygger rubriken för prognossidan
+def forecast_title(city):
+    return f"Weather in {city}"

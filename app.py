@@ -3,7 +3,7 @@ import logging
 from flask import Flask, redirect, render_template, request, url_for
 
 from api import WeatherAPIError
-from weather_service import city_name_list, weather_dashboard
+from weather_service import city_name_list, weather_dashboard, forecast_title
 
 # Loggning till konsolen, så att man ser vad som händer i appen
 logging.basicConfig(
@@ -12,6 +12,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+
+# Registrerar filtret så att det kan användas i mallarna
+app.add_template_filter(forecast_title, "forecast_title")
 
 
 @app.errorhandler(404)

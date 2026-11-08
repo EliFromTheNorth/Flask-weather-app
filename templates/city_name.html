@@ -3,9 +3,10 @@
 
 {% block content %}
 
-{# Stadens namn skickas in från routen weather #}
-<h1 class="display-5 fw-bold text-center">Weather in {{city}}</h1>
-{# if: om API:et inte svarar visas felmeddelandet istället för tabellerna #}
+{# Stadens namn skickas in från routen weather. Vårt egna filter forecast_title bygger rubriken #}
+<h1 class="display-5 fw-bold text-center">{{ city | forecast_title }}</h1>
+
+{# om API:et inte svarar visas felmeddelandet istället för tabellerna #}
 {% if error %}<div class="alert alert-danger">{{ error }}</div>
 {% else %}
 
