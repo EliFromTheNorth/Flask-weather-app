@@ -23,7 +23,7 @@ cities_list = {
 }
 
 def cities(url):
-    data = fetch_weather(URL)
+    data = fetch_weather(url)
 
     cities_json = []
     for e in data:
@@ -57,10 +57,10 @@ def city_name_list():
 # pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
 # print(pretty_data)
 
-data = cities(URL)
 
 #tady do te funkce se bude posilat to mesto, ktere uzivatel vybral v roletce
 def select_city(city_name):
+    data = cities(URL)
     for e in data:
         if e['city'] == city_name:
             logger.info(f"City {city_name} found.")
@@ -69,7 +69,7 @@ def select_city(city_name):
     abort(404)
         
 
-pprint(select_city('Stockholm'))
+# pprint(select_city('Stockholm'))
 # pprint(select_city('hhh'))
 
 # def units(number, key, city):

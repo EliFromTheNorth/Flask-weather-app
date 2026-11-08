@@ -3,9 +3,10 @@
 {% block content %}
 
 <h1 class="display-5 fw-bold">{{city}}</h1>
-
+{% if error %}<div class="alert alert-danger">{{ error }}</div>
+{% else %}
 
 {{ current_weather | safe }}
 {{ dashboard | safe }}
-
+{% endif %}
 {% endblock %}
