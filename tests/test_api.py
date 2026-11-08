@@ -1,7 +1,7 @@
 import pytest
 import requests
 from unittest.mock import patch, Mock
-from api import fetch_weather
+from api import WeatherAPIError, fetch_weather
 
 
 @patch("api.requests.get", side_effect=requests.Timeout)
