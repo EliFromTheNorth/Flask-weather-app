@@ -3,6 +3,10 @@ import requests
 from unittest.mock import patch, Mock
 from api import WeatherAPIError, fetch_weather
 
+@patch("api.requests.get")
+def test_fetch_ok(mock_get):
+    mock_get.return_value.json.return_value = {"a": 1}
+    assert fetch_weather("https://invalid-adress-12345") == {"a": 1}
 
 @patch("api.requests.get", side_effect=requests.Timeout)
 def test_timeout(mock_get):

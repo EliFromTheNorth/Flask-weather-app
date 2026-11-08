@@ -10,7 +10,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-# app.jinja_env.filters['units'] = units
 
 @app.errorhandler(404)
 def error404(error):

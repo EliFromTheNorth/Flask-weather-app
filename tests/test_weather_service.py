@@ -3,8 +3,6 @@ from weather_service import current_weather_table, city_name_list, is_valid_city
 import pytest
 
 fake_current_weather_data = {
-    # "latitude": 59.33,
-    # "longitude": 18.07,
     "city": "Stockholm",
     "current": {
         "temperature_2m": 36,

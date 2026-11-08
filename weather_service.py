@@ -1,6 +1,4 @@
 from api import fetch_weather
-# import requests
-# import json
 from pprint import pprint
 import logging
 import pandas as pd
@@ -34,8 +32,6 @@ def cities(url):
             if lat == cities_list[city]['lat'] and lon == cities_list[city]['lon']:
                 e['city'] = city
                 cities_json.append(e)
-                # ordered_city_data = {"city": city, **e}                
-                # cities_json.append(ordered_city_data)
                 city_found = True
                 break
         if not city_found:
@@ -49,16 +45,6 @@ def city_name_list():
     for e in cities_json:
         city_names.append(e['city'])
     return city_names
-# return sorted(list({e['city'] for e in cities_json if 'city' in e}))
-
-
-# pprint(cities(URL))
-
-# pretty_data = json.dumps(cities(url), indent=4, ensure_ascii=False)
-# print(pretty_data)
-
-
-#tady do te funkce se bude posilat to mesto, ktere uzivatel vybral v roletce
 
 def is_valid_city(name):
     """Return True if the city is in our list."""
@@ -75,43 +61,6 @@ def select_city(city_name):
     logger.warning(f"City {city_name} not found.")
     abort(404)
         
-
-# pprint(select_city('Stockholm'))
-# pprint(select_city('hhh'))
-
-# def units(number, key, city):
-#     selected_city = select_city(city)
-    
-#     if key in selected_city.get('current', {}):
-#         unit = selected_city.get('current_units', {}).get(key, '')
-#         return f"{number} {unit}"
-        
-#     elif key in selected_city.get('daily', {}):
-#         unit = selected_city.get('daily_units', {}).get(key, '')
-#         return f"{number} {unit}"
-        
-#     return number
-
-# def units(number, key, city):
-#     selected_city = select_city(city)
-#     if not selected_city:
-#         return number
-
-#     # Pokud klíč obsahuje slovo 'temperature', přidáme °C (nebo jednotku přímo z API)
-#     if 'temperature' in key.lower():
-#         # Zkusíme najít jednotku v current_units nebo daily_units
-#         unit = selected_city.get('current_units', {}).get(key, '')
-#         if not unit:
-#             unit = selected_city.get('daily_units', {}).get(key, '')
-        
-#         # Pojistka kdyby v JSONu jednotka nebyla, natvrdo dáme °C
-#         if not unit:
-#             unit = "°C"
-            
-#         return f"{number} {unit}"
-        
-#     return number
-
 def current_weather_table(city):
     table_data = []
     selected_city = select_city(city)
@@ -125,10 +74,9 @@ def current_weather_table(city):
         df = None
     return df
 
-
 def create_table_3days(city):
     table_data = []
-    selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
+    selected_city = select_city(city) 
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
             table_data.append({
@@ -140,18 +88,11 @@ def create_table_3days(city):
         df = pd.DataFrame(table_data).T
     else:
         df = None
-    return df #vrati tabulku k danemu mestu
-
-# print(create_table("Stockholm"))
-
-
-
+    return df 
 
 def weather_dashboard(city):
     current_table = current_weather_table(city)
     table = create_table_3days(city)
-    # table.columns = ["" for _ in table.columns]
-    # if df_current is not None and table_3days is not None:
     if table is not None and current_table is not None:
         html_3days = table.to_html(classes="table table-striped", header=False)
         html_current = current_table.to_html(classes="table table-striped", header=False)
