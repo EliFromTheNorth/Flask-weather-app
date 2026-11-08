@@ -4,6 +4,7 @@ from api import fetch_weather
 from pprint import pprint
 import logging
 import pandas as pd
+from flask import abort 
 
 logging.basicConfig(
     level=logging.INFO,
@@ -65,7 +66,7 @@ def select_city(city_name):
             logger.info(f"City {city_name} found.")
             return e
     logger.warning(f"City {city_name} not found.")
-    return None
+    abort(404)
         
 
 pprint(select_city('Stockholm'))
@@ -108,7 +109,8 @@ def weather_dashboard(city):
     table = create_table_3days(city)
     # table.columns = ["" for _ in table.columns]
     # if df_current is not None and table_3days is not None:
-    html_3days = table.to_html(classes="table table-striped", header=False)
-    html_current = current_table.to_html(classes="table table-striped", header=False)
-    return html_current, html_3days
-    # return None, None 
+    if table is not None and current_table is not None:
+        html_3days = table.to_html(classes="table table-striped", header=False)
+        html_current = current_table.to_html(classes="table table-striped", header=False)
+        return html_current, html_3days
+    return None, None 
