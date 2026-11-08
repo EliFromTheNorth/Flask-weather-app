@@ -72,13 +72,46 @@ def select_city(city_name):
 pprint(select_city('Stockholm'))
 # pprint(select_city('hhh'))
 
+# def units(number, key, city):
+#     selected_city = select_city(city)
+    
+#     if key in selected_city.get('current', {}):
+#         unit = selected_city.get('current_units', {}).get(key, '')
+#         return f"{number} {unit}"
+        
+#     elif key in selected_city.get('daily', {}):
+#         unit = selected_city.get('daily_units', {}).get(key, '')
+#         return f"{number} {unit}"
+        
+#     return number
+
+def units(number, key, city):
+    selected_city = select_city(city)
+    if not selected_city:
+        return number
+
+    # Pokud klíč obsahuje slovo 'temperature', přidáme °C (nebo jednotku přímo z API)
+    if 'temperature' in key.lower():
+        # Zkusíme najít jednotku v current_units nebo daily_units
+        unit = selected_city.get('current_units', {}).get(key, '')
+        if not unit:
+            unit = selected_city.get('daily_units', {}).get(key, '')
+        
+        # Pojistka kdyby v JSONu jednotka nebyla, natvrdo dáme °C
+        if not unit:
+            unit = "°C"
+            
+        return f"{number} {unit}"
+        
+    return number
+
 def current_weather_table(city):
     table_data = []
     selected_city = select_city(city)
     if selected_city:
         table_data.append({
-            "Temperature": selected_city['current']['temperature_2m'],
-            "Wind speed": selected_city['current']['wind_speed_10m']
+            "Temperature": f"{selected_city['current']['temperature_2m']} {selected_city['current_units']['temperature_2m']}",
+            "Wind speed": f"{selected_city['current']['wind_speed_10m']} {selected_city['current_units']['wind_speed_10m']}"
         })
         df = pd.DataFrame(table_data).T
     else:
@@ -86,16 +119,16 @@ def current_weather_table(city):
     return df
 
 
-def create_table_3days(city): #casem se to predela na dve tabulky
+def create_table_3days(city):
     table_data = []
     selected_city = select_city(city) # tady se vybere to mesto, ketre uzivatel vybrala poslou se vsechny data k tomu mestu
     if selected_city:
         for i in range(len(selected_city['daily']['time'])):
             table_data.append({
                 "datum": selected_city['daily']['time'][i],
-                "Daily precipitation": selected_city['daily']['precipitation_sum'][i],
-                "max daily temperature": selected_city['daily']['temperature_2m_max'][i],
-                "min daily temperature": selected_city['daily']['temperature_2m_min'][i]
+                "Daily precipitation": f"{selected_city['daily']['precipitation_sum'][i]} {selected_city['daily_units']['precipitation_sum']}",
+                "max daily temperature": f"{selected_city['daily']['temperature_2m_max'][i]} {selected_city['daily_units']['temperature_2m_max']}",
+                "min daily temperature": f"{selected_city['daily']['temperature_2m_min'][i]} {selected_city['daily_units']['temperature_2m_min']}"
             })
         df = pd.DataFrame(table_data).T
     else:
@@ -103,6 +136,9 @@ def create_table_3days(city): #casem se to predela na dve tabulky
     return df #vrati tabulku k danemu mestu
 
 # print(create_table("Stockholm"))
+
+
+
 
 def weather_dashboard(city):
     current_table = current_weather_table(city)
