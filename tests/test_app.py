@@ -7,11 +7,13 @@ from api import WeatherAPIError
 from app import app
 
 
+# Fixture: Flasks testklient, som används av alla tester
 @pytest.fixture
 def client():
     return app.test_client()
 
 
+# Lyckat fall: startsidan ska visa städerna. city_name_list mockas, så inget nätverk behövs
 @patch("app.city_name_list", return_value=["Stockholm", "Kiruna"])
 def test_index_ok(mock_cities, client):
     response = client.get("/")
@@ -19,11 +21,13 @@ def test_index_ok(mock_cities, client):
     assert "Stockholm" in response.get_data(as_text=True)
 
 
+# Felfall: okänd stad ska ge statuskod 404 (NotFound simulerar abort(404))
 @patch("app.weather_dashboard", side_effect=NotFound)
 def test_unknown_city_gives_404(mock_dashboard, client):
     assert client.get("/Paris").status_code == 404
 
 
+# Felfall: om API:et inte svarar ska appen ge 502 och visa felmeddelandet
 @patch("app.weather_dashboard", side_effect=WeatherAPIError("API is down"))
 def test_api_error_shows_message(mock_dashboard, client):
     response = client.get("/Malmö")

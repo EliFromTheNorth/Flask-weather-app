@@ -2,13 +2,18 @@
 {% block content %}
 <div class="mb-4 rounded-3">
     <div class="container-fluid">
-        <h1 class="display-5 fw-bold">Hello!</h1>
+        <h1 class="display-5 fw-bold">Welcome!</h1>
+        <p class="lead">Here you can find the weather forecast for the next three days in selected Swedish cities.</p>
+        {# om API:et inte svarar visas felmeddelandet istället för formuläret #}
         {% if error %}<div class="alert alert-danger">{{ error }}</div>
         {% else %}
+        {# GET-formulär - valet skickas som selected_city  och läses i routen med request.args #}
+        <form action="/" method="GET" class="mt-3">
         <form action="/" method="GET" class="mt-3">
         <div class="mb-3">
             <select name="selected_city" class="form-select" autocomplete="off" required>
                 <option value="" disabled selected>-- Select city --</option>
+                    {# for-loop: skapar ett alternativ i rullgardinslistan för varje stad #}
                     {% for city in cities %}
                         <option value="{{ city }}">{{ city }}</option>
                     {% endfor %}                

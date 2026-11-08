@@ -5,6 +5,7 @@ from flask import Flask, redirect, render_template, request, url_for
 from api import WeatherAPIError
 from weather_service import city_name_list, weather_dashboard
 
+# Loggning till konsolen, så att man ser vad som händer i appen
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 )
@@ -20,8 +21,10 @@ def error404(error):
 
 @app.route("/")
 def index():
+    # Formuläret skickar valet som selected_city
     selected_city = request.args.get("selected_city")
     if selected_city:
+        # Skicka vidare till prognossidan för den valda staden
         return redirect(url_for("weather", city_name=selected_city))
     try:
         city_names = city_name_list()
@@ -33,6 +36,7 @@ def index():
 @app.route("/<city_name>")
 def weather(city_name):
     try:
+        # Hämtar data och bygger tabellerna. Okänd stad ger 404 (abort i weather_service)
         html_current, html_3days = weather_dashboard(city_name)
     except WeatherAPIError as e:
         return render_template("city_name.html", city=city_name, error=str(e)), 502

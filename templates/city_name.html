@@ -1,11 +1,15 @@
+{# Prognossidan. Ärver layouten från base.html och fyller i blocket content #}
 {% extends "base.html" %}
 
 {% block content %}
 
+{# Stadens namn skickas in från routen weather #}
 <h1 class="display-5 fw-bold">{{city}}</h1>
+{# if: om API:et inte svarar visas felmeddelandet istället för tabellerna #}
 {% if error %}<div class="alert alert-danger">{{ error }}</div>
 {% else %}
 
+{# safe behövs eftersom tabellerna redan är färdig HTML (från pandas to_html) #}
 {{ current_weather | safe }}
 {{ dashboard | safe }}
 {% endif %}
