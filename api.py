@@ -1,7 +1,9 @@
 import requests
 
+
 class WeatherAPIError(Exception):
-       pass
+    pass
+
 
 def fetch_weather(url):
     """Fetches weather data from api"""

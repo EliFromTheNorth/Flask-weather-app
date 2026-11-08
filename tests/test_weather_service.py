@@ -1,24 +1,23 @@
-from unittest.mock import Mock, patch
-from weather_service import current_weather_table, city_name_list, is_valid_city
+from unittest.mock import patch
+
 import pytest
+
+from weather_service import city_name_list, current_weather_table, is_valid_city
 
 fake_current_weather_data = {
     "city": "Stockholm",
-    "current": {
-        "temperature_2m": 36,
-        "wind_speed_10m": 2},
-    "current_units": {
-        "temperature_2m": "°C", 
-        "wind_speed_10m": "km/h"},
-    }
+    "current": {"temperature_2m": 36, "wind_speed_10m": 2},
+    "current_units": {"temperature_2m": "°C", "wind_speed_10m": "km/h"},
+}
 
-       
+
 @patch("weather_service.select_city", return_value=fake_current_weather_data)
 def test_current_weather_table(mock_select):
     table = current_weather_table("Stockholm")
     assert len(table) == 2
     assert table.iloc[0, 0] == "36 °C"
     assert table.iloc[1, 0] == "2 km/h"
+
 
 @patch(
     "weather_service.cities",
@@ -41,4 +40,3 @@ def test_correct_cities_json(mock_cities):
 )
 def test_is_valid_city(name, expected):
     assert is_valid_city(name) == expected
-

@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound
 from api import WeatherAPIError
 from app import app
 
+
 @pytest.fixture
 def client():
     return app.test_client()
