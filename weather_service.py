@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import pandas as pd
 from flask import abort
@@ -80,7 +81,7 @@ def current_weather_table(city):
     if selected_city:
         table_data.append(
             {
-                "Temperature": f"{selected_city['current']['temperature_2m']} {selected_city['current_units']['temperature_2m']}",
+                "Current Temperature": f"{selected_city['current']['temperature_2m']} {selected_city['current_units']['temperature_2m']}",
                 "Wind speed": f"{selected_city['current']['wind_speed_10m']} {selected_city['current_units']['wind_speed_10m']}",
             }
         )
@@ -99,10 +100,11 @@ def create_table_3days(city):
         for i in range(len(selected_city["daily"]["time"])):
             table_data.append(
                 {
-                    "": selected_city["daily"]["time"][i],
-                    "Daily precipitation": f"{selected_city['daily']['precipitation_sum'][i]} {selected_city['daily_units']['precipitation_sum']}",
-                    "max daily temperature": f"{selected_city['daily']['temperature_2m_max'][i]} {selected_city['daily_units']['temperature_2m_max']}",
-                    "min daily temperature": f"{selected_city['daily']['temperature_2m_min'][i]} {selected_city['daily_units']['temperature_2m_min']}",
+                    # Gör om "2026-11-08" till "Nov 08"
+                    "": f"<b>{datetime.strptime(selected_city['daily']['time'][i], '%Y-%m-%d').strftime('%b %d')}</b>",
+                    "Precipitation": f"{selected_city['daily']['precipitation_sum'][i]} {selected_city['daily_units']['precipitation_sum']}",
+                    "Max Temperature": f"{selected_city['daily']['temperature_2m_max'][i]} {selected_city['daily_units']['temperature_2m_max']}",
+                    "Min Temperature": f"{selected_city['daily']['temperature_2m_min'][i]} {selected_city['daily_units']['temperature_2m_min']}",
                 }
             )
         # .T vänder tabellen så att värdena hamnar på rader
@@ -117,9 +119,9 @@ def weather_dashboard(city):
     current_table = current_weather_table(city)
     table = create_table_3days(city)
     if table is not None and current_table is not None:
-        html_3days = table.to_html(classes="table table-striped", header=False)
+        html_3days = table.to_html(classes="w-100", header=False, border=0, escape=False)
         html_current = current_table.to_html(
-            classes="table table-striped", header=False
+            classes="w-100", header=False, border=0
         )
         return html_current, html_3days
     return None, None

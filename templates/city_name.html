@@ -4,13 +4,17 @@
 {% block content %}
 
 {# Stadens namn skickas in från routen weather #}
-<h1 class="display-5 fw-bold text-center">{{city}}</h1>
+<h1 class="display-5 fw-bold text-center">Weather in {{city}}</h1>
 {# if: om API:et inte svarar visas felmeddelandet istället för tabellerna #}
 {% if error %}<div class="alert alert-danger">{{ error }}</div>
 {% else %}
 
 {# safe behövs eftersom tabellerna redan är färdig HTML (från pandas to_html) #}
+<div class="bg-white bg-opacity-50 rounded p-3 text-center">
 {{ current_weather | safe }}
+</div>
+<div class="bg-white bg-opacity-50 rounded p-3 text-center">
 {{ dashboard | safe }}
+</div>
 {% endif %}
 {% endblock %}

@@ -10,7 +10,7 @@
         {# GET-formulär - valet skickas som selected_city  och läses i routen med request.args #}
         <form action="{{ url_for('index') }}" method="GET" class="mt-3">
         <div class="mb-3">
-            <select name="selected_city" class="form-select" autocomplete="off" required>
+            <select name="selected_city" class="form-select w-50 mx-auto" autocomplete="off" required>
                 <option value="" disabled selected>-- Select city --</option>
                     {# for-loop: skapar ett alternativ i rullgardinslistan för varje stad #}
                     {% for city in cities %}
