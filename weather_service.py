@@ -119,12 +119,13 @@ def weather_dashboard(city):
     current_table = current_weather_table(city)
     table = create_table_3days(city)
     if table is not None and current_table is not None:
-        html_3days = table.to_html(classes="w-100", header=False, border=0, escape=False)
-        html_current = current_table.to_html(
-            classes="w-100", header=False, border=0
+        html_3days = table.to_html(
+            classes="w-100", header=False, border=0, escape=False
         )
+        html_current = current_table.to_html(classes="w-100", header=False, border=0)
         return html_current, html_3days
     return None, None
+
 
 # Eget filter: bygger rubriken för prognossidan
 def forecast_title(city):

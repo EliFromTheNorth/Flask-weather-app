@@ -2,7 +2,12 @@ from unittest.mock import patch
 
 import pytest
 
-from weather_service import city_name_list, current_weather_table, is_valid_city, forecast_title
+from weather_service import (
+    city_name_list,
+    current_weather_table,
+    forecast_title,
+    is_valid_city,
+)
 
 # Låtsasdata för en stad, så att testet inte behöver något nätverk
 fake_current_weather_data = {
@@ -47,6 +52,7 @@ def test_correct_cities_json(mock_cities):
 )
 def test_is_valid_city(name, expected):
     assert is_valid_city(name) == expected
+
 
 # parametrize kör samma test flera gånger med olika indata.
 # Kontrollerar att vårt filter bygger rätt rubrik för olika städer

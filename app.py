@@ -3,7 +3,7 @@ import logging
 from flask import Flask, redirect, render_template, request, url_for
 
 from api import WeatherAPIError
-from weather_service import city_name_list, weather_dashboard, forecast_title
+from weather_service import city_name_list, forecast_title, weather_dashboard
 
 # Loggning till konsolen, så att man ser vad som händer i appen
 logging.basicConfig(
