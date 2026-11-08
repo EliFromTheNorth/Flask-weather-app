@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from api import fetch_weather
+from api import WeatherAPIError
 import logging
 from weather_service import weather_dashboard, cities, city_name_list
 
@@ -23,7 +23,7 @@ def index():
         return redirect(url_for('weather', city_name=selected_city))
     try:
         city_names = city_name_list()
-    except RuntimeError as e:
+    except WeatherAPIError as e:
         return render_template("index.html", cities=[], error=str(e)), 502
     return render_template("index.html", cities=city_names)
 
@@ -31,6 +31,6 @@ def index():
 def weather(city_name):
     try:
         html_current, html_3days = weather_dashboard(city_name)
-    except RuntimeError as e:
+    except WeatherAPIError as e:
         return render_template("city_name.html", city=city_name, error=str(e)), 502
     return render_template("city_name.html", city=city_name, dashboard=html_3days, current_weather = html_current)

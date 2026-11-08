@@ -1,5 +1,8 @@
 import requests
 
+class WeatherAPIError(Exception):
+       pass
+
 def fetch_weather(url):
     """Fetches weather data from api"""
 
@@ -16,13 +19,13 @@ def fetch_weather(url):
         return answer.json()
 
     except requests.Timeout as e:
-        raise RuntimeError("The server did not respond in time (Timeout)") from e
+        raise WeatherAPIError("The server did not respond in time (Timeout)") from e
     except requests.HTTPError as e:
         status = e.response.status_code if e.response is not None else "unknown"
-        raise RuntimeError(f"HTTP error! Status code: {status}") from e
+        raise WeatherAPIError(f"HTTP error! Status code: {status}") from e
     except requests.ConnectionError as e:
-        raise RuntimeError(
+        raise WeatherAPIError(
             "Could not reach the server. Check your internet connection."
         ) from e
     except (requests.RequestException, ValueError) as e:
-        raise RuntimeError("An error occurred while fetching data.") from e
+        raise WeatherAPIError("An error occurred while fetching data.") from e
