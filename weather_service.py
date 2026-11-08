@@ -59,7 +59,14 @@ def city_name_list():
 
 
 #tady do te funkce se bude posilat to mesto, ktere uzivatel vybral v roletce
+
+def is_valid_city(name):
+    """Return True if the city is in our list."""
+    return name in cities_list
+
 def select_city(city_name):
+    if not is_valid_city(city_name):
+        abort(404)
     data = cities(URL)
     for e in data:
         if e['city'] == city_name:

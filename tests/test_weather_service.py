@@ -1,5 +1,6 @@
 from unittest.mock import Mock, patch
-from weather_service import current_weather_table, city_name_list
+from weather_service import current_weather_table, city_name_list, is_valid_city
+import pytest
 
 fake_current_weather_data = {
     # "latitude": 59.33,
@@ -34,4 +35,12 @@ def test_current_weather_table(mock_select):
 def test_correct_cities_json(mock_cities):
     expected_data = {"Stockholm", "Göteborg", "Malmö", "Umeå", "Kiruna"}
     assert set(city_name_list()) == expected_data
+
+
+@pytest.mark.parametrize(
+    "name, expected",
+    [("Stockholm", True), ("Kiruna", True), ("Paris", False), ("", False)],
+)
+def test_is_valid_city(name, expected):
+    assert is_valid_city(name) == expected
 
