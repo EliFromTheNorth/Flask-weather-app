@@ -11,18 +11,20 @@ def fetch_weather(url):
         # svar = requests.get("https://httpbin.org/html") #TEST - FEL: Kunde inte tolka data från servern (ogiltig JSON).
         # svar = requests.get("invalid-adress-12345") #TEST - FEL: return "Ett nätverksfel uppstod vid hämtning av data."
 
-        svar = requests.get(url, timeout=5)
-        svar.raise_for_status()  # Kontrollerar om servern svarade med ett HTTP-fel
-        return svar.json()
+        answer = requests.get(url, timeout=5)
+        answer.raise_for_status()  # Kontrollerar om servern svarade med ett HTTP-fel
+        return answer.json()
 
-    except requests.Timeout:
-        return "Servern svarade inte i tid (Timeout)"
+    except requests.Timeout as e:
+        raise RuntimeError("Servern svarade inte i tid (Timeout)") from e
     except requests.HTTPError as e:
-        status = e.response.status_code if e.response else "okänd"
-        return f"HTTP-fel! Felkod: {status}"
-    except requests.ConnectionError:
-        return "Kunde inte nå servern. Kontrollera din internetanslutning."
-    except ValueError:
-        return "Kunde inte tolka data från servern (ogiltig JSON)."
-    except requests.exceptions.RequestException:
-        return "Ett nätverksfel uppstod vid hämtning av data."
+        status = e.response.status_code if e.response is not None
+        raise RuntimeError(f"HTTP-fel! Felkod: {status}") from e
+    except requests.ConnectionError as e:
+        raise RuntimeError(
+            "Kunde inte nå servern. Kontrollera din internetanslutning."
+        ) from e
+    except ValueError as e:
+        raise RuntimeError("Kunde inte tolka data från servern (ogiltig JSON).") from e
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError("Ett nätverksfel uppstod vid hämtning av data.") from e

@@ -85,25 +85,25 @@ pprint(select_city('Stockholm'))
         
 #     return number
 
-def units(number, key, city):
-    selected_city = select_city(city)
-    if not selected_city:
-        return number
+# def units(number, key, city):
+#     selected_city = select_city(city)
+#     if not selected_city:
+#         return number
 
-    # Pokud klíč obsahuje slovo 'temperature', přidáme °C (nebo jednotku přímo z API)
-    if 'temperature' in key.lower():
-        # Zkusíme najít jednotku v current_units nebo daily_units
-        unit = selected_city.get('current_units', {}).get(key, '')
-        if not unit:
-            unit = selected_city.get('daily_units', {}).get(key, '')
+#     # Pokud klíč obsahuje slovo 'temperature', přidáme °C (nebo jednotku přímo z API)
+#     if 'temperature' in key.lower():
+#         # Zkusíme najít jednotku v current_units nebo daily_units
+#         unit = selected_city.get('current_units', {}).get(key, '')
+#         if not unit:
+#             unit = selected_city.get('daily_units', {}).get(key, '')
         
-        # Pojistka kdyby v JSONu jednotka nebyla, natvrdo dáme °C
-        if not unit:
-            unit = "°C"
+#         # Pojistka kdyby v JSONu jednotka nebyla, natvrdo dáme °C
+#         if not unit:
+#             unit = "°C"
             
-        return f"{number} {unit}"
+#         return f"{number} {unit}"
         
-    return number
+#     return number
 
 def current_weather_table(city):
     table_data = []
