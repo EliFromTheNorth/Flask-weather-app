@@ -56,7 +56,6 @@ def city_name_list():
 
 # Ingen nätverksanrop, därför enkel att testa med parametrize
 def is_valid_city(name):
-    """Return True if the city is in our list."""
     return name in cities_list
 
 
